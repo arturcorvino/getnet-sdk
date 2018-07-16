@@ -10,5 +10,9 @@
             "email": "artur.corvino1@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "autoload": {
+        "psr-4": {
+            "Getnet\\": "src"
+        }
+    }
 }
