@@ -1,0 +1,14 @@
+{
+    "name": "arturcorvino/getnet-sdk",
+    "description": "SDK integration GetNet",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "Artur F. Corvino Rosa",
+            "email": "artur.corvino1@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
