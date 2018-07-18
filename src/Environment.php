@@ -7,7 +7,7 @@ use Getnet\SDK\Interfaces\Environment as EnvironmentInterface;
 /**
  * Class Environment
  *
- * @package Artur\GetnetSDK
+ * @package Getnet\SDK
  */
 class Environment implements EnvironmentInterface
 {

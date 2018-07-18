@@ -5,7 +5,7 @@ namespace Getnet\SDK\Interfaces;
 /**
  * Interface Environment
  *
- * @package Artur\GetnetSDK\Interfaces
+ * @package Getnet\SDK\Interfaces
  */
 interface Environment
 {

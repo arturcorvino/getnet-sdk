@@ -2,13 +2,13 @@
 
 namespace Getnet\SDK\Services;
 
-use Artur\GetnetSDK\Auth;
-use Artur\GetnetSDK\Environment;
+use Getnet\SDK\Auth;
+use Getnet\SDK\Environment;
 
 /**
  * Class CreditCard
  *
- * @package Artur\GetnetSDK\Services
+ * @package Getnet\SDK\Services
  */
 class CreditCard
 {

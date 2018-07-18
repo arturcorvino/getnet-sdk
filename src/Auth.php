@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\RequestException;
 /**
  * Class Auth
  *
- * @package Artur\GetnetSDK
+ * @package Getnet\SDK
  */
 class Auth
 {

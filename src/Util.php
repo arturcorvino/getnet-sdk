@@ -5,7 +5,7 @@ namespace Getnet\SDK;
 /**
  * Class Util
  *
- * @package Artur\GetnetSDK
+ * @package Getnet\SDK
  */
 class Util
 {
