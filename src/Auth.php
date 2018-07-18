@@ -127,17 +127,7 @@ class Auth
     {
         $url = $this->environment->getApiUrl() . "auth/oauth/v2/token";
 
-        $this->success = true;
-        $this->code = 200;
-        $this->message = 200;
-        $this->accessToken = "ABC-123";
-        $this->tokenType = "Bearer";
-        $this->expiresIn = "3600";
-        $this->scope = "3600";
-
-        return $this;
-
-        /*$client = new Client();
+        $client = new Client();
 
         try {
             $guzzleReturn = $client->request('POST', $url, [
@@ -149,15 +139,24 @@ class Auth
                     'grant_type' => 'client_credentials',
                 ]
             ]);
+
+            $return = json_decode($guzzleReturn->getBody(), true);
+
+            $this->success = true;
+            $this->code = $guzzleReturn->getStatusCode();
+            $this->message = "";
+            $this->accessToken = $return['access_token'];
+            $this->tokenType = $return['token_type'];
+            $this->expiresIn = $return['expires_in'];
+            $this->scope = $return['scope'];
+
         } catch (RequestException $e) {
-            $e->getCode();
-            $e->getMessage();
-            return false;
+            $this->success = false;
+            $this->code = $e->getCode();
+            $this->message = $e->getMessage();
         }
 
-        dd($url);
-
-        return [];*/
+        return $this;
     }
 
 

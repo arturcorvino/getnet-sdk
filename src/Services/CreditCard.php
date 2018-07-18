@@ -4,6 +4,8 @@ namespace Getnet\SDK\Services;
 
 use Getnet\SDK\Auth;
 use Getnet\SDK\Environment;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Class CreditCard
@@ -47,6 +49,12 @@ class CreditCard
 
     /** @var string $message */
     private $message;
+
+    /** @var string $numberToken */
+    private $numberToken;
+
+    /** @var string $numberToken */
+    private $cardId;
 
     /**
      * Auth constructor.
@@ -183,42 +191,121 @@ class CreditCard
 
     /**
      *
+     * @return string
+     */
+    public function getCardId()
+    {
+        return $this->cardId;
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getNumberToken()
+    {
+        return $this->numberToken;
+    }
+
+    /**
+     *
+     * Tokenize Card
+     *
      * @return $this
      */
     public function tokenizeCard()
     {
-        // Criar o token passando só o número do cartão e o id do cliente
+        $this->createNumberToken();
+
+        if (!$this->getSuccess()) {
+            return $this;
+        }
+
+        $this->createCard();
+
+        return $this;
+    }
+
+    /**
+     *
+     * Create token number
+     *
+     * @return $this
+     */
+    private function createNumberToken()
+    {
         $url = $this->environment->getApiUrl() . "v1/tokens/card";
-        $data = [
-            'header' => [
-                'Authorization' => $this->auth->getTokenType() . " " . $this->auth->getAccessToken(),
-            ],
-            'body' => [
-                "card_number" => $this->cardNumber,
-                "customer_id" => $this->customerId,
-            ],
-        ];
 
-        // Salvar o cartão passando o token e o restante dos dados
+        $client = new Client();
+
+        try {
+            $guzzleReturn = $client->request('POST', $url, [
+                'headers' => [
+                    'Authorization' => $this->auth->getTokenType() . " " . $this->auth->getAccessToken(),
+                ],
+                'form_params' => [
+                    "card_number" => $this->cardNumber,
+                    "customer_id" => $this->customerId,
+                ]
+            ]);
+
+            $return = json_decode($guzzleReturn->getBody(), true);
+
+            $this->success = true;
+            $this->code = $guzzleReturn->getStatusCode();
+            $this->message = "";
+            $this->numberToken = $return['number_token'];
+
+        } catch (RequestException $e) {
+            $this->success = false;
+            $this->code = $e->getCode();
+            $this->message = $e->getMessage();
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     * Create card number
+     *
+     * @return $this
+     */
+    private function createCard()
+    {
         $url = $this->environment->getApiUrl() . "v1/cards";
-        $data = [
-            'header' => [
-                'Authorization' => $this->auth->getTokenType() . " " . $this->auth->getAccessToken(),
-            ],
-            'body' => [
-                "card_number" => "", // retorno do primeiro endpoint
-                "cardholder_name" => $this->customerHolderName,
-                "expiration_month" => $this->expirationMonth,
-                "expiration_year" => $this->expirationYear,
-                "customer_id" => $this->customerId,
-                "verify_card" => $this->verifyCard,
-                "security_code" => $this->securityCode
-            ],
-        ];
 
-        $this->success = true;
-        $this->code = 200;
-        $this->message = "ASD";
+        $client = new Client();
+
+        try {
+            $guzzleReturn = $client->request('POST', $url, [
+                'headers' => [
+                    'Authorization' => $this->auth->getTokenType() . " " . $this->auth->getAccessToken(),
+                ],
+                'form_params' => [
+                    "card_number" => "", $this->numberToken,
+                    "cardholder_name" => $this->customerHolderName,
+                    "expiration_month" => $this->expirationMonth,
+                    "expiration_year" => $this->expirationYear,
+                    "customer_id" => $this->customerId,
+                    "verify_card" => $this->verifyCard,
+                    "security_code" => $this->securityCode
+                ]
+            ]);
+
+            $return = json_decode($guzzleReturn->getBody(), true);
+
+            $this->success = true;
+            $this->code = $guzzleReturn->getStatusCode();
+            $this->message = "";
+            $this->numberToken = $return['number_token'];
+            $this->cardId = $return['card_id'];
+
+        } catch (RequestException $e) {
+            $this->success = false;
+            $this->code = $e->getCode();
+            $this->message = $e->getMessage();
+        }
 
         return $this;
     }
