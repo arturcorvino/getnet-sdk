@@ -4,7 +4,7 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Artur F. Corvino Rosa",
