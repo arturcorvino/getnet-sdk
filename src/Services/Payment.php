@@ -1,9 +1,9 @@
 <?php
 
-namespace Getnet\SDK\Services;
+namespace Getnet\Services;
 
-use Getnet\SDK\Getnet\Auth;
-use Getnet\SDK\Getnet\Environment;
+use Getnet\Getnet\Auth;
+use Getnet\Getnet\Environment;
 
 /**
  * Class Payment

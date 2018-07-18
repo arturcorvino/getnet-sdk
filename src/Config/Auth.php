@@ -1,15 +1,15 @@
 <?php
 
-namespace Getnet\SDK\Getnet;
+namespace Getnet\Config;
 
-use Getnet\SDK\Requests\GetNetResponse;
+use Getnet\Requests\GetNetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 /**
  * Class Auth
  *
- * @package Getnet\SDK\Getnet
+ * @package Getnet\Config
  */
 class Auth
 {

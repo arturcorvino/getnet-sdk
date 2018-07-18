@@ -1,6 +1,6 @@
 <?php
 
-namespace Getnet\SDK\Requests;
+namespace Getnet\Requests;
 
 /**
  * Class GetNetError

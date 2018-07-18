@@ -1,10 +1,10 @@
 <?php
 
-namespace Getnet\SDK\Services;
+namespace Getnet\Services;
 
-use Getnet\SDK\Getnet\Auth;
-use Getnet\SDK\Getnet\Environment;
-use Getnet\SDK\Requests\GetNetResponse;
+use Getnet\Config\Auth;
+use Getnet\Config\Environment;
+use Getnet\Requests\GetNetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 

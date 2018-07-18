@@ -1,11 +1,11 @@
 <?php
 
-namespace Getnet\SDK\Getnet;
+namespace Getnet\Config;
 
 /**
  * Class Environment
  *
- * @package Getnet\SDK\Getnet
+ * @package Getnet\Config
  */
 class Environment
 {
