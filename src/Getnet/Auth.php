@@ -1,19 +1,26 @@
 <?php
 
-namespace Getnet\SDK;
+namespace Getnet\SDK\Getnet;
 
+use Getnet\SDK\Requests\GetNetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 /**
  * Class Auth
  *
- * @package Getnet\SDK
+ * @package Getnet\SDK\Getnet
  */
 class Auth
 {
+    /** @var string $authString */
     private $authString;
+
+    /** @var Environment $environment */
     private $environment;
+
+    /** @var GetNetResponse $getnetResponse */
+    public $getnetResponse;
 
     /** @var boolean $success */
     private $success;
@@ -52,31 +59,11 @@ class Auth
     /**
      * Gets result of auth in api
      *
-     * @return boolean success
+     * @return GetNetResponse
      */
-    public function getSuccess()
+    public function getResponse()
     {
-        return $this->success;
-    }
-
-    /**
-     * Gets result of auth in api
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * Gets result of auth in api
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
+        return $this->getnetResponse;
     }
 
     /**
@@ -142,18 +129,15 @@ class Auth
 
             $return = json_decode($guzzleReturn->getBody(), true);
 
-            $this->success = true;
-            $this->code = $guzzleReturn->getStatusCode();
-            $this->message = "";
+            $this->getnetResponse = new GetNetResponse(true, $guzzleReturn->getStatusCode(), '');
+
             $this->accessToken = $return['access_token'];
             $this->tokenType = $return['token_type'];
             $this->expiresIn = $return['expires_in'];
             $this->scope = $return['scope'];
 
         } catch (RequestException $e) {
-            $this->success = false;
-            $this->code = $e->getCode();
-            $this->message = $e->getMessage();
+            $this->getnetResponse = new GetNetResponse(false, $e->getCode(), $e->getMessage());
         }
 
         return $this;

@@ -2,8 +2,9 @@
 
 namespace Getnet\SDK\Services;
 
-use Getnet\SDK\Auth;
-use Getnet\SDK\Environment;
+use Getnet\SDK\Getnet\Auth;
+use Getnet\SDK\Getnet\Environment;
+use Getnet\SDK\Requests\GetNetResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -16,6 +17,9 @@ class CreditCard
 {
     /** @var Environment $environment */
     private $environment;
+
+    /** @var GetNetResponse $getnetResponse */
+    private $getnetResponse;
 
     /** @var string $cardNumber */
     private $cardNumber;
@@ -41,15 +45,6 @@ class CreditCard
     /** @var Auth $auth */
     private $auth;
 
-    /** @var boolean $success */
-    private $success;
-
-    /** @var string $code */
-    private $code;
-
-    /** @var string $message */
-    private $message;
-
     /** @var string $numberToken */
     private $numberToken;
 
@@ -64,6 +59,16 @@ class CreditCard
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
+    }
+
+    /**
+     * Gets result of auth in api
+     *
+     * @return GetNetResponse
+     */
+    public function getResponse()
+    {
+        return $this->getnetResponse;
     }
 
     /**
@@ -164,33 +169,6 @@ class CreditCard
 
     /**
      *
-     * @return boolean
-     */
-    public function getSuccess()
-    {
-        return $this->success;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     *
      * @return string
      */
     public function getCardId()
@@ -251,15 +229,11 @@ class CreditCard
 
             $return = json_decode($guzzleReturn->getBody(), true);
 
-            $this->success = true;
-            $this->code = $guzzleReturn->getStatusCode();
-            $this->message = "";
+            $this->getnetResponse = new GetNetResponse(true, $guzzleReturn->getStatusCode(), '');
             $this->numberToken = $return['number_token'];
 
         } catch (RequestException $e) {
-            $this->success = false;
-            $this->code = $e->getCode();
-            $this->message = $e->getMessage();
+            $this->getnetResponse = new GetNetResponse(false, $e->getCode(), $e->getMessage());
         }
 
         return $this;
@@ -295,16 +269,13 @@ class CreditCard
 
             $return = json_decode($guzzleReturn->getBody(), true);
 
-            $this->success = true;
-            $this->code = $guzzleReturn->getStatusCode();
-            $this->message = "";
+            $this->getnetResponse = new GetNetResponse(true, $guzzleReturn->getStatusCode(), '');
+
             $this->numberToken = $return['number_token'];
             $this->cardId = $return['card_id'];
 
         } catch (RequestException $e) {
-            $this->success = false;
-            $this->code = $e->getCode();
-            $this->message = $e->getMessage();
+            $this->getnetResponse = new GetNetResponse(false, $e->getCode(), $this->message = $e->getMessage());
         }
 
         return $this;

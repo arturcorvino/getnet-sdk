@@ -1,15 +1,13 @@
 <?php
 
-namespace Getnet\SDK;
-
-use Getnet\SDK\Interfaces\Environment as EnvironmentInterface;
+namespace Getnet\SDK\Getnet;
 
 /**
  * Class Environment
  *
- * @package Getnet\SDK
+ * @package Getnet\SDK\Getnet
  */
-class Environment implements EnvironmentInterface
+class Environment
 {
     private $api;
 
